@@ -2,7 +2,7 @@ var VideoListView = Backbone.View.extend({
   
   initialize: function() {
     this.collection.on('sync', this.render, this);
-    this.videos = new Videos(window.exampleVideoData);
+    this.collection.on('refresh', this.render, this);
 
   },
 
@@ -22,8 +22,3 @@ var VideoListView = Backbone.View.extend({
 
 });
 
-// {
-//       var newVideo = new VideoListEntryView({model: Video});
-//       this.$el.append(newVideo.render());
-      
-//     });

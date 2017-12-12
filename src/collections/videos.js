@@ -2,10 +2,10 @@ var Videos = Backbone.Collection.extend({
 
   model: Video,
 
-  el: '#app',
+  // el: '#app',
 
   search: function(search) {
-    var self = this;
+    // var self = this;
     $.ajax({
       method: 'GET',
       url: 'https://www.googleapis.com/youtube/v3/search',
@@ -13,13 +13,16 @@ var Videos = Backbone.Collection.extend({
         key: window.YOUTUBE_API_KEY,
         maxResults: '5',
         part: 'snippet',
-        q: 'gugudan',
+        q: search,
         type: 'video',
       },
       dataType: 'json',
-      success: function(data) {
-      //  console.log(data);
-        self.populateList(data.items);
+      success: (data) => {
+        this.reset();
+        _.each(data.items, (video) => {
+          this.add(video);
+        });
+        this.trigger('refresh', this);
       },
 
       error: function(data) {
@@ -28,14 +31,5 @@ var Videos = Backbone.Collection.extend({
       
     });
   },
-
-
-  populateList: function(data) {
-// console.log(this);
-    new VideoListView({
-      collection: data
-    }).render();
-  }
-
   
 });
